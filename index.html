@@ -1,0 +1,152 @@
+<html>
+<head>
+    <script src="node_modules/jquery/dist/jquery.min.js" type="text/javascript"></script>
+</head>
+
+<body>
+<div id="survey">
+  <div id="q1">
+    Are you trying to estimate, classify, or discover?<br>
+    <input type="radio" name="q1" value="estimate"> Estimate<br>
+    <input type="radio" name="q1" value="classify"> Classify<br>
+    <input type="radio" name="q1" value="discover"> Discover
+  </div>
+  <div id="q2">
+    Are you more concerned with explanatory power, or predictive power?<br>
+    <input type="radio" name="q2" value="explantory"> Explanatory Power<br>
+    <input type="radio" name="q2" value="predictive"> Predictive Power<br>
+  </div>
+  <div id="q3">
+    Do you have reason to believe linearity?
+<br>
+    <input type="radio" name="q3" value="yes"> Yes<br>
+    <input type="radio" name="q3" value="no"> No<br>
+    <input type="radio" name="q3" value="unsure"> I'm unsure<br>
+  </div>
+    <div id="q4">
+        Do you know if your data follows a normal distribution?<br>
+        <input type="radio" name="q4" value="yes"> Yes<br>
+        <input type="radio" name="q4" value="no"> No<br>
+        <input type="radio" name="q4" value="unsure"> I'm unsure<br>
+    </div>
+    <div id="q5">
+        Does your dataset have any missing values?<br>
+        <input type="radio" name="q5" value="yes"> Yes<br>
+        <input type="radio" name="q5" value="no"> No<br>
+        <input type="radio" name="q5" value="unsure"> I'm unsure<br>
+    </div>
+    <div id="q6">
+        Does your dataset have any missing values?<br>
+        <input type="radio" name="q6" value="yes"> Yes<br>
+        <input type="radio" name="q6" value="no"> No<br>
+        <input type="radio" name="q6" value="unsure"> I'm unsure<br>
+    </div>
+    <div id="q7">
+        Do you have more variables/features than samples?<br>
+        <input type="radio" name="q7" value="yes"> Yes<br>
+        <input type="radio" name="q7" value="no"> No<br>
+        <input type="radio" name="q7" value="unsure"> I'm unsure<br>
+    </div>
+    <div id="q8">
+        Are your variables/features independent of each other?<br>
+        <input type="radio" name="q8" value="yes"> Yes<br>
+        <input type="radio" name="q8" value="no"> No<br>
+        <input type="radio" name="q8" value="unsure"> I'm unsure<br>
+    </div>
+    <div id="q9">
+        Is time a variable?<br>
+        <input type="radio" name="q9" value="yes"> Yes<br>
+        <input type="radio" name="q9" value="no"> No<br>
+        <input type="radio" name="q9" value="unsure"> I'm unsure<br>
+    </div>
+</div>
+
+<div id="suggestion">
+    You want a regression model
+</div>
+
+<script>
+
+questions = {
+    "q1" : undefined,
+    "q2" : undefined,
+    "q3" : undefined,
+    "q4" : undefined,
+    "q5" : undefined,
+    "q6" : undefined,
+    "q7" : undefined,
+    "q8" : undefined,
+    "q9" : undefined,
+    "q10" : undefined,
+};
+
+//initialize survey
+$("#suggestion").hide();
+for (q in questions) {
+    if (q !== "q1") {
+        $("#"+q).hide()
+    }
+}
+
+$("input[name$='q1']").click(function() {
+    questions.q1 = $(this).val();
+    $("#q1").hide();
+    $("#q2").show();
+});
+
+$("input[name$='q2']").click(function() {
+    questions.q2 = $(this).val();
+    $("#q2").hide();
+    $("#q3").show();
+});
+
+$("input[name$='q3']").click(function() {
+    questions.q3 = $(this).val();
+    $("#q3").hide();
+    $("#q4").show();
+});
+
+$("input[name$='q4']").click(function() {
+    questions.q4 = $(this).val();
+    $("#q4").hide();
+    $("#q5").show();
+});
+
+$("input[name$='q5']").click(function() {
+    questions.q5 = $(this).val();
+    $("#q5").hide();
+    $("#q6").show();
+});
+
+$("input[name$='q6']").click(function() {
+    questions.q6 = $(this).val();
+    $("#q6").hide();
+    $("#q7").show();
+});
+
+$("input[name$='q7']").click(function() {
+    questions.q7 = $(this).val();
+    $("#q7").hide();
+    $("#q8").show();
+});
+
+$("input[name$='q8']").click(function() {
+    questions.q8 = $(this).val();
+    $("#q8").hide();
+    $("#q9").show();
+});
+
+$("input[name$='q9']").click(function() {
+    questions.q9 = $(this).val();
+    $("#q9").hide();
+    $("#suggestion").show();
+});
+
+
+</script>
+
+
+
+</body>
+</html>
+
