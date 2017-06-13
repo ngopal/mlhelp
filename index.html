@@ -9,13 +9,15 @@
 
 <body>
 <div class="page-header">
-    <h1>mlhelp<br><small>Let's figure out what you need</small></h1>
+    <h1>mlhelp<br>
+        <small id="mainsub">Let's figure out what you need</small>
+    </h1>
 </div>
 <div class="progress">
     <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" id="progbar" style="width: 0%;">
     </div>
 </div>
-<div id="survey">
+<div id="survey" style="padding:0 19px">
 </div>
 
 <script>
@@ -100,7 +102,10 @@ $(document).ready(function() {
 
 </script>
 
-
+<div id="about" style="display: none">
+    <h3>About:</h3><br>
+    <p>This app itself is based on a decision tree of of my own spreadsheet.</p>
+</div>
 
 </body>
 </html>
