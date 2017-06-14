@@ -13,19 +13,36 @@
         <small id="mainsub">Let's figure out what you need</small>
     </h1>
 </div>
-<div class="progress">
-    <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" id="progbar" style="width: 0%;">
-    </div>
-</div>
 <div id="survey" style="padding:0 19px">
 </div>
 
 <script>
 
 var survey = [
+    // In general, I'm not sure should map to YES, just to be on the safe side
     {
-        "question" : "Are you trying to estimate a value, classify, or discover?",
-        "answers" : ["Estimate", "Classify", "Discover"],
+        "question" : "Do you have more variables than samples?",
+        "answers" : ["Yes", "No", "I'm not sure"],
+        "userSelected" : undefined
+    },
+    {
+        "question" : "Do you have multiple outcome variables?",
+        "answers" : ["Yes", "No", "I'm not sure"],
+        "userSelected" : undefined
+    },
+    {
+        "question" : "Are your variables independent of each other?",
+        "answers" : ["Yes", "No", "I'm not sure"],
+        "userSelected" : undefined
+    },
+    {
+        "question" : "Is time a variable you want to use?",
+        "answers" : ["Yes", "No", "I'm not sure"],
+        "userSelected" : undefined
+    },
+    {
+        "question" : "Do you have reason to believe linearity?",
+        "answers" : ["Yes", "No", "I'm not sure"],
         "userSelected" : undefined
     },
     {
@@ -34,28 +51,8 @@ var survey = [
         "userSelected" : undefined
     },
     {
-        "question" : "Do you have reason to believe linearity?",
-        "answers" : ["Yes", "No", "I'm unsure"],
-        "userSelected" : undefined
-    },
-    {
-        "question" : "Does your data follow a normal distribution?",
-        "answers" : ["Yes", "No", "I'm unsure"],
-        "userSelected" : undefined
-    },
-    {
-        "question" : "Do you have have more variables than samples?",
-        "answers" : ["Yes", "No", "I'm unsure"],
-        "userSelected" : undefined
-    },
-    {
-        "question" : "Are your variables independent of each other?",
-        "answers" : ["Yes", "No", "I'm unsure"],
-        "userSelected" : undefined
-    },
-    {
-        "question" : "Is time a variable you want to use?",
-        "answers" : ["Yes", "No", "I'm unsure"],
+        "question" : "Are you trying to estimate a value, classify, or discover?",
+        "answers" : ["Estimate", "Classify", "Discover"],
         "userSelected" : undefined
     }
 ];
@@ -72,28 +69,133 @@ function writeQuestion(key) {
     ss = '<div id="'+key+'">';
     ss += survey[key].question+"<br>";
     for (a in survey[key].answers) {
-        ss += '<input type="radio" name="'+key+'" value="'+survey[key].answers[a]+'" onclick=nextUp()> '+survey[key].answers[a]+' <br>'
+        ss += '<input type="radio" name="'+key+'" value="'+a+'" onclick=nextUp()> '+survey[key].answers[a]+' <br>'
     }
     ss += '</div>';
     return ss
 }
 
 function updateProgress() {
+    // change function to read "level" and change progress based on remaining nests?
     return ((stage+1) / survey.length)*100 + "%";
 }
 
 function nextUp() {
     $("#"+stage).hide();
-    survey[stage].userSelected = $('input[name$="'+stage+'"]').val();
+    //console.log($("#"+stage+" input[type='radio']:checked").val());
+    survey[stage].userSelected = $("#"+stage+" input[type='radio']:checked").val();
+    chooser(survey);
     $("#progbar").width(updateProgress());
     stage += 1;
     $("#survey").append(writeQuestion(stage));
 }
 
-function answer() {
+function answer(answer) {
     // This function will traverse the survey object after user interaction to provide suggestion
-    $("#survey").hide()
-    $("body").append('<div id="answer">ANSWER</div>')
+    $("#survey").hide();
+    $("body").append('<div id="answer">'+answer.toString()+'</div>')
+}
+
+function chooser(su) {
+    // This function is generated through a python script
+    if ( +su[0].userSelected >= 0.5 ) {
+        if ( +su[1].userSelected >= 0.5 ) {
+            if ( +su[2].userSelected >= 0.5 ) {
+                if ( +su[3].userSelected >= 0.5 ) {
+                    if ( +su[4].userSelected >= 0.5 ) {
+                        if ( +su[5].userSelected >= 0.5 ) {
+                            return answer(["svm"])
+                        }
+                        else if (isNaN(+su[5].userSelected)) {
+                            console.log("PASS")
+                        }
+                        else {
+                            if ( +su[6].userSelected >= 0.5 ) {
+                                return answer(["Learning Vector Quantization", "Naive Bayes", "decision tree", "knn"])
+                            }
+                            else if (isNaN(+su[6].userSelected)) {
+                                console.log("PASS")
+                            }
+                            else {
+                                if ( +su[6].userSelected >= 1.5 ) {
+                                    return answer(["Factor Analysis", "k-means"])
+                                }
+                                else if (isNaN(+su[6].userSelected)) {
+                                    console.log("PASS")
+                                }
+                                else {
+                                    return answer(["Naive Bayes", "svm"])
+                                }
+                            }
+                        }
+                    }
+                    else if (isNaN(+su[4].userSelected)) {
+                        console.log("PASS")
+                    }
+                    else {
+                        if ( +su[6].userSelected >= 0.5 ) {
+                            return answer(["Linear Discriminant Analysis"])
+                        }
+                        else if (isNaN(+su[6].userSelected)) {
+                            console.log("PASS")
+                        }
+                        else {
+                            if ( +su[6].userSelected >= 1.5 ) {
+                                return answer(["PCA"])
+                            }
+                            else if (isNaN(+su[6].userSelected)) {
+                                console.log("PASS")
+                            }
+                            else {
+                                return answer(["decision tree"])
+                            }
+                        }
+                    }
+                }
+                else if (isNaN(+su[3].userSelected)) {
+                    console.log("PASS")
+                }
+                else {
+                    return answer(["ARIMA", "Hazard Regression"])
+                }
+            }
+            else if (isNaN(+su[2].userSelected)) {
+                console.log("PASS")
+            }
+            else {
+                if ( +su[6].userSelected >= 1.0 ) {
+                    //estimation
+                    return answer(["logistic regression"])
+                }
+                else if (isNaN(+su[6].userSelected)) {
+                    console.log("PASS")
+                }
+                else {
+                    return answer(["linear regression", "logistic regression"])
+                }
+            }
+        }
+        else if (isNaN(+su[1].userSelected)) {
+            console.log("PASS")
+        }
+        else {
+            if ( +su[5].userSelected >= 0.5 ) {
+                return answer(["Neural Network"])
+            }
+            else if (isNaN(+su[5].userSelected)) {
+                console.log("PASS")
+            }
+            else {
+                return answer(["Multivariate Regression"])
+            }
+        }
+    }
+    else if (isNaN(+su[0].userSelected)) {
+        console.log("PASS")
+    }
+    else {
+        return answer(["random forest"])
+    }
 }
 
 $(document).ready(function() {
@@ -105,7 +207,12 @@ $(document).ready(function() {
 <div id="about" style="display: none">
     <h3>About:</h3><br>
     <p>This app itself is based on a decision tree of of my own spreadsheet.</p>
+    <p>The goal of the app</p>
+    <p>How it works</p>
+    <p>The flowchart</p>
+    <p>The code</p>
 </div>
+
 
 </body>
 </html>
