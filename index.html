@@ -38,7 +38,7 @@
             <h1>Which machine learning approach do you need?<br>
             <small id="mainsub">Find out in fewer than 7 questions</small>
             </h1>
-            <button type="button" class="btn btn-primary">Let's Begin</button>
+            <button type="button" class="btn btn-primary" onclick=letsBegin()>Let's Begin</button>
         </center>
     </div>
     <div id="survey" style="padding:0 19px">
@@ -76,6 +76,11 @@
 
 // Add back button capability (decrementing stage variable, and be sure to reset userSelected to undefined)
 // Add start over button (refresh page, or reset stage variable)
+
+function letsBegin() {
+    $(".page-header").hide();
+    $("#survey").show()
+}
 
 function showAbout() {
     $("#therightstuff").hide();
@@ -143,8 +148,8 @@ function writeQuestion(key) {
         return
     }
 
-    ss = '<div id="'+key+'">';
-    ss += survey[key].question+"<br>";
+    ss = '<div id="'+key+'"><h1>';
+    ss += survey[key].question+"</h1><br>";
     for (a in survey[key].answers) {
         ss += '<input type="radio" name="'+key+'" value="'+a+'" onclick=nextUp()> '+survey[key].answers[a]+' <br>'
     }
@@ -152,16 +157,10 @@ function writeQuestion(key) {
     return ss
 }
 
-function updateProgress() {
-    // change function to read "level" and change progress based on remaining nests?
-    return ((stage+1) / survey.length)*100 + "%";
-}
-
 function nextUp() {
     $("#"+stage).hide();
     survey[stage].userSelected = $("#"+stage+" input[type='radio']:checked").val();
     chooser(survey);
-    $("#progbar").width(updateProgress());
     stage += 1;
     $("#survey").append(writeQuestion(stage));
 }
@@ -179,7 +178,7 @@ function answer(answer) {
     });
     $("#therightstuff").append('</ul></div><p></p>');
     $("#therightstuff").append('<div id="answerme"><p>' +
-            "This is an approximation of the technique you need to get started. What you may really want is an <i>ensemble technique -- combining the power of several machine learning techniques</i>.<p>If you would like to schedule an appointment, please email me your project, timeframe, and budget -- don't worry if you are with a non-profit or academic group, I reserve a portion of my time for pro bono work!</p>"  +
+            "This is an approximation of the technique you need to get started. What you may really want is an <i>ensemble technique -- combining the power of several machine learning techniques</i>. If you have a large number of variables on general, you may also need supplement your model with a dimensionality reduction technique, and/or a regularization method (to ensure the model is not overfit).<p>If you would like to schedule an appointment, please email me your project, timeframe, and budget -- don't worry if you are with a non-profit or academic group, I reserve a portion of my time for pro bono work!</p>"  +
             '</p></div>');
     //add supporting information for the answer
     //add relevant product recommendations
@@ -288,7 +287,8 @@ function chooser(su) {
 }
 
 $(document).ready(function() {
-   $("#survey").append(writeQuestion(stage));
+    $("#survey").hide();
+    $("#survey").append(writeQuestion(stage));
 });
 
 var information = {
