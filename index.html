@@ -65,6 +65,7 @@
         <h3>Already an expert?</h3><br>
         <p>If you are experienced in machine learning or statistics, and would like to be forwarded clients, please complete this form (or git pull? I want to make this as easy as possible...). I have my own area of expertise, and limited amount of bandwidth -- this would be a great opportunity to connect clients with experts, and network ourselves!</p>
         <p>Form: Name, Email, Areas of Expertise (and years of experience), Prior Consulting Experience, LinkedIn, Twitter, Languages</p>
+        <p>Link: Look through our database</p>
     </div>
 </div>
 
@@ -147,29 +148,67 @@ var survey = [
 
 var stage = 0;
 
+function decrementStage() {
+    if (stage <= 0) {
+        stage = 0;
+        survey[stage].userSelected = undefined;
+        resolveOrNextQuestion();
+    }
+    else {
+        $("#"+stage).hide();
+        stage -= 1;
+        survey[stage].userSelected = undefined;
+        resolveOrNextQuestion();
+    }
+}
+
+function resetStage() {
+    $("#"+stage).hide();
+    var prevStage = stage;
+    for (s=0; s >= prevStage; s++) {
+        $("#"+s).hide();
+        survey[s].userSelected = undefined;
+    }
+    stage = 0;
+    resolveOrNextQuestion();
+}
+
 function writeQuestion(key) {
 
     if (key >= survey.length) {
         answer();
         return
     }
-
-    ss = '<div id="'+key+'"><h1>';
-    ss += survey[key].question+"</h1><br>";
-    for (a in survey[key].answers) {
-        ss += '<input type="radio" name="'+key+'" value="'+a+'" onclick=nextUp()> '+survey[key].answers[a]+' <br>'
+    else if ($("#"+key).length !== 0) {
+        $("#"+key).show()
     }
-    ss += '</div>';
-    ss += '<div id="reverselinks"><p>Previous Question</p> | <p> Start Over</p></div>'
-    return ss
+    else {
+        ss = '<div id="'+key+'"><h1>';
+        ss += survey[key].question+"</h1><br>";
+        for (a in survey[key].answers) {
+            ss += '<input type="radio" name="'+key+'" value="'+a+'" onclick=nextUp()> '+survey[key].answers[a]+' <br>'
+        }
+        ss += '<div id="reverselinks"><button type="button" class="btn btn-secondary" onclick=decrementStage()>Previous Question</button> | <button type="button" class="btn btn-secondary" onclick=resetStage()>Start Over</button></div>'
+        ss += '</div>';
+
+        return ss
+    }
+}
+
+function incrementStage() {
+    stage += 1;
+}
+
+function resolveOrNextQuestion() {
+    chooser(survey); // try to resolve answer
+    $("#survey").append(writeQuestion(stage)); // write next question
 }
 
 function nextUp() {
-    $("#"+stage).hide();
-    survey[stage].userSelected = $("#"+stage+" input[type='radio']:checked").val();
-    chooser(survey);
-    stage += 1;
-    $("#survey").append(writeQuestion(stage));
+    $("#"+stage).hide(); // hide question
+    survey[stage].userSelected = $("#"+stage+" input[type='radio']:checked").val(); // record selected value
+    incrementStage(); // increment stage. this is being incremented after being decremented in another function above
+    resolveOrNextQuestion();
 }
 
 function answer(answer) {
