@@ -74,7 +74,7 @@
     <div id="expertdiv">
         <h3>Already an expert?</h3><br>
         <p>If you are experienced in machine learning or statistics, and would like to be forwarded clients, please complete this form (or git pull? I want to make this as easy as possible...). I have my own area of expertise, and limited amount of bandwidth -- this would be a great opportunity to connect clients with experts, and network ourselves!</p>
-        <p>Form: Name, Email, Areas of Expertise (and years of experience), Prior Consulting Experience, LinkedIn, Twitter, Languages</p>
+        <iframe src="https://docs.google.com/forms/d/e/1FAIpQLScBnDo3UywwaITVcGWupzNGwRLDJoYexqzM36p8yMTorsFQ4A/viewform?embedded=true" width="760" height="500" frameborder="0" marginheight="0" marginwidth="0">Loading...</iframe>
         <p>Link: Look through our database</p>
     </div>
 </div>
@@ -223,7 +223,7 @@ function answer(answer) {
     $("#survey").hide();
     $("#therightstuff").append('<div id="answer"><ul>');
     answer.forEach(function(a) {
-        $("#therightstuff").append('<li>'+a);
+        $("#therightstuff").append('<li>'+prettytext(a));
         if (a in information) {
             $("#therightstuff").append('<ul><li>'+information[a].resources.description+'</li></ul>');
         }
@@ -232,7 +232,9 @@ function answer(answer) {
     $("#therightstuff").append('</ul></div><p></p>');
     $("#therightstuff").append('<div id="answerme"><p>' +
             "This is an approximation of the technique you need to get started. What you may really want is an <i>ensemble technique -- combining the power of several machine learning techniques</i>. If you have a large number of variables on general, you may also need supplement your model with a dimensionality reduction technique, and/or a regularization method (to ensure the model is not overfit).<p>If you would like to schedule an appointment, please email me your project, timeframe, and budget -- don't worry if you are with a non-profit or academic group, I reserve a portion of my time for pro bono work!</p>"  +
-            '</p></div>');
+            '</p>' +
+            '<iframe src="https://docs.google.com/forms/d/e/1FAIpQLSfZAKi21NgV-EidHCWPHqhOPsD0AnzQFaKA9aEnDsABasPY1g/viewform?embedded=true" width="760" height="500" frameborder="0" marginheight="0" marginwidth="0">Loading...</iframe>' +
+            '</div>');
     //add supporting information for the answer
     //add relevant product recommendations
     //add information about the most difficult parts about ML (feature engineering, tuning, etc)?
@@ -346,15 +348,32 @@ $(document).ready(function() {
     $("#survey").append(writeQuestion(stage));
 });
 
-var products = {
-    "books" : [
+var resources = [
         {"title" : "Practical Data Science",
+            "type": "book",
         "link" : "https://www.amazon.com/Practical-Data-Science-Nina-Zumel/dp/1617291560/ref=sr_1_2?ie=UTF8&qid=1497652211&sr=8-2&keywords=practical+data+science",
         "relevantContext" : ["linear regression", "logistic regression"]},
-        {"title" : ""}
-    ],
-    "courses": []
-};
+        {"title" : "machinelearningmastery.com",
+        "type":"course",
+        "link": "",
+        "relevantContext" : []},
+    {"title" : "Coursera",
+        "type":"course",
+        "link": "",
+        "relevantContext" : []},
+    {"title" : "sklearn",
+        "type":"software",
+        "link": "",
+        "relevantContext" : []},
+    {"title" : "Collective Intelligence",
+        "type":"book",
+        "link": "",
+        "relevantContext" : []},
+    {"title" : "WEKA",
+        "type":"software",
+        "link": "",
+        "relevantContext" : []}
+    ];
 
 var information = {
     "logistic regression" : {
@@ -366,7 +385,8 @@ var information = {
             "software" : [],
             "courses" : ["jasonbrownlee"],
             "videos" : [],
-            "wikilink" : "https://en.wikipedia.org/wiki/Logistic_regression"
+            "wikilink" : "https://en.wikipedia.org/wiki/Logistic_regression",
+            "title" : "Logistic Regression"
         }
     },
     "linear regression" : {
@@ -375,7 +395,8 @@ var information = {
             "books" : [],
             "software" : [],
             "courses" : [],
-            "wikilink" : "https://en.wikipedia.org/wiki/Linear_regression"
+            "wikilink" : "https://en.wikipedia.org/wiki/Linear_regression",
+            "title" : "Linear Regression"
             }
     },
     "decision tree" : {
@@ -384,10 +405,56 @@ var information = {
             "books" : [],
             "software" : [],
             "courses" : [],
-            "wikilink" : "https://en.wikipedia.org/wiki/Decision_tree"
+            "wikilink" : "https://en.wikipedia.org/wiki/Decision_tree",
+            "title" : "Decision Tree"
+        }
+    },
+    "svm" : {
+        "resources" : {
+            "title" : "Support Vector Machine",
+            "description" : "A method used to find a \"decision boundary\" that best separates data."
+        }
+    },
+    "PCA" : {
+        "resources" : {
+            "title" : "Principal Components Analysis",
+            "description" : "A method used to condense the number of variables used in a model."
+        }
+    },
+    "knn" : {
+        "resources" : {
+            "title" : "K Nearest Neighbors",
+            "description" : "A method that will classify new data points based on its proximity to other data points (i.e. its neighbors)."
+        }
+    },
+    "k-means" : {
+        "resources" : {
+            "title" : "K-means",
+            "description" : "A method that will group data points"
+        }
+    },
+    "Naive Bayes" : {
+        "resources" : {
+            "title" : "Naive Bayes",
+            "description": "A method that uses conditional probability to provide an estimate."
+        }
+    },
+    "random forest" : {
+        "resources" : {
+            "title" : "Random Forest",
+            "description" : "Ideal as a starting point for analysis, and general workhorse in the world of machine learning. This method creates and \"averages\" a number of decision trees."
         }
     }
 };
+
+function prettytext(x) {
+    if (x in information) {
+        return information[x].resources.title
+    }
+    else {
+        return x
+    }
+}
 
 function addendum(list) {
     //select the right data from information based on techniques returned to user
